@@ -1,58 +1,66 @@
-local dir = path.getdirectory(_SCRIPT)
+function SetupImGui(imgui_premake_dir, extraconfig)
+    local dir = path.getdirectory(imgui_premake_dir)
 
-project "imgui"
-    kind "StaticLib"
-    language "C++"
-    cppdialect "C++23"
-    staticruntime "on"
+    print(dir)
 
-    binoutputdir = binoutputdir or "%{cfg.buildcfg}-%{cfg.platform}"
-    objoutputdir = objoutputdir or "%{cfg.buildcfg}-%{cfg.platform}"
+    project "imgui"
+        extraconfig()
+        kind "StaticLib"
+        language "C++"
+        cppdialect "C++23"
+        staticruntime "on"
+        location(dir)
 
-    targetdir("bin/" .. binoutputdir .. "/%{prj.name}")
-    objdir("obj/" .. objoutputdir .. "/%{prj.name}")
+        binoutputdir = binoutputdir or "%{cfg.buildcfg}-%{cfg.platform}"
+        objoutputdir = objoutputdir or "%{cfg.buildcfg}-%{cfg.platform}"
 
-    links { "glfw", "X11" }
-    libdirs { os.findlib("glfw"), os.findlib("X11"), }
+        targetdir("bin/" .. binoutputdir .. "/%{prj.name}")
+        objdir("obj/" .. objoutputdir .. "/%{prj.name}/")
 
-    files {
-        dir .. "/*",
-        dir .. "/backends/imgui_impl_glfw.*",
-        dir .. "/misc/cpp/**",
-    }
+        links { "glfw", "X11" }
+        libdirs { os.findlib("glfw"), os.findlib("X11"), }
 
-    includedirs {
-        dir,                               -- Include the imgui directory itself
-        dir .. "/backends",                -- Include the imgui backends
-        dir .. "/misc/cpp",  
-    }
-
-    filter "platforms:rvulkan"
-        files
-        {
-            dir .. "/backends/imgui_impl_vulkan.*",
+        files {
+            dir .. "/*",
+            dir .. "/backends/imgui_impl_glfw.*",
+            dir .. "/misc/cpp/**",
         }
-        links { "vulkan", }
-        libdirs { os.findlib("vulkan"), }
 
-    filter "platforms:opengl3"
-        files
-        {
-            "/backends/imgui_impl_opengl3.*",
+        includedirs {
+            dir,                               -- Include the imgui directory itself
+            dir .. "/backends",                -- Include the imgui backends
+            dir .. "/misc/cpp",  
         }
-        links { "GL", }
 
-    filter "configurations:Debug"
-        defines { "DEBUG=1" }
-        symbols "On"
-        optimize "Off"
+        filter "platforms:rvulkan"
+            files
+            {
+                dir .. "/backends/imgui_impl_vulkan.*",
+            }
+            links { "vulkan", }
+            libdirs { os.findlib("vulkan"), }
 
-    filter "configurations:Release"
-        defines { "DEBUG=0" }
-        symbols "Off"
-        optimize "Speed"
+        filter "platforms:opengl3"
+            files
+            {
+                "/backends/imgui_impl_opengl3.*",
+            }
+            links { "GL", }
 
-    filter "configurations:Dist"
-        defines { "NODEBUG=1" }
-        symbols "Off"
-        optimize "Speed"
+        filter "configurations:Debug"
+            defines { "DEBUG=1" }
+            symbols "On"
+            optimize "Off"
+
+        filter "configurations:Release"
+            defines { "DEBUG=0" }
+            symbols "Off"
+            optimize "Speed"
+
+        filter "configurations:Dist"
+            defines { "NODEBUG=1" }
+            symbols "Off"
+            optimize "Speed"
+
+        filter {}
+end
