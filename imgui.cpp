@@ -1566,6 +1566,7 @@ bool ImGuiStyle::Save(const char* filename)
     fprintf(f, "ColumnsMinSpacing=%f\n",                                    style.ColumnsMinSpacing);
     fprintf(f, "ScrollbarSize=%f\n",                                        style.ScrollbarSize);
     fprintf(f, "ScrollbarRounding=%f\n",                                    style.ScrollbarRounding);
+    fprintf(f, "ScrollbarPadding=%f\n",                                    style.ScrollbarPadding);
     fprintf(f, "GrabMinSize=%f\n",                                          style.GrabMinSize);
     fprintf(f, "GrabRounding=%f\n",                                         style.GrabRounding);
     fprintf(f, "LogSliderDeadzone=%f\n",                                    style.LogSliderDeadzone);
@@ -1710,6 +1711,7 @@ bool ImGuiStyle::Load(const char* filename)
         if (sscanf(line, "ColumnsMinSpacing=%f",                                    &style.ColumnsMinSpacing) == 1) continue;
         if (sscanf(line, "ScrollbarSize=%f",                                        &style.ScrollbarSize) == 1) continue;
         if (sscanf(line, "ScrollbarRounding=%f",                                    &style.ScrollbarRounding) == 1) continue;
+        if (sscanf(line, "ScrollbarPadding=%f",                                     &style.ScrollbarPadding) == 1) continue;
         if (sscanf(line, "GrabMinSize=%f",                                          &style.GrabMinSize) == 1) continue;
         if (sscanf(line, "GrabRounding=%f",                                         &style.GrabRounding) == 1) continue;
         if (sscanf(line, "LogSliderDeadzone=%f",                                    &style.LogSliderDeadzone) == 1) continue;
