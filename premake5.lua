@@ -1,8 +1,6 @@
 function SetupImGui(imgui_premake_dir, extraconfig)
     local dir = path.getdirectory(imgui_premake_dir)
 
-    print(dir)
-
     project "imgui"
         extraconfig()
         kind "StaticLib"
@@ -43,7 +41,7 @@ function SetupImGui(imgui_premake_dir, extraconfig)
         filter "platforms:opengl3"
             files
             {
-                "/backends/imgui_impl_opengl3.*",
+                dir .. "/backends/imgui_impl_opengl3.*",
             }
             links { "GL", }
 
