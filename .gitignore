@@ -6,6 +6,8 @@ imgui.ini
 imgui*.ini
 
 ## General build artifacts
+Makefile
+*.make
 *.o
 *.obj
 *.exe
